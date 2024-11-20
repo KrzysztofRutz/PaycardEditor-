@@ -22,17 +22,14 @@ internal class PaycardEditorDbContext : DbContext
 
     public class PaycardEditorDbContextFactory : IDesignTimeDbContextFactory<PaycardEditorDbContext>
     {
-        private readonly IConfiguration _configuration;
-
-        public PaycardEditorDbContextFactory(IConfiguration configuration)
+        public PaycardEditorDbContextFactory()
         {
-            _configuration = configuration;
         }
 
         public PaycardEditorDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<PaycardEditorDbContext>();
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("PaycardCS"));
+            optionsBuilder.UseSqlServer("Server=LAPTOP-G9F6P9TK\\SQLEXPRESS;Database=PaycardDB;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True");
 
             return new PaycardEditorDbContext(optionsBuilder.Options);
         }

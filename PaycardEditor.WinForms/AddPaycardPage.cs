@@ -1,26 +1,29 @@
 ﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using PaycardEditor.Applications.Commands.Paycard.AddPaycard;
 
 namespace PaycardEditor.WinForms;
 
 public partial class AddPaycardPage : Form
 {
+    private readonly IServiceProvider _serviceProvider;
     private readonly IMediator _mediator;
 
-    public AddPaycardPage(IMediator mediator)
+    public AddPaycardPage(IServiceProvider serviceProvider, IMediator mediator)
     {
+        _serviceProvider = serviceProvider;
         _mediator = mediator;
 
         InitializeComponent();     
     }
 
-    private void SubmitButton_Click(object sender, EventArgs e)
+    private async void SubmitButton_Click(object sender, EventArgs e)
     {
         var command = new AddPaycardCommand()
         {
-            OwnerAccountNr = int.Parse(OwnerAccountNrTextBox.Text),
+            OwnerAccountNr = OwnerAccountNrTextBox.Text,
             PIN = int.Parse(PINTextBox.Text),
-            SerialNr = int.Parse(SerialNrTextBox.Text),
+            SerialNr = SerialNrTextBox.Text,
         };
 
         var result = _mediator.Send(command);
@@ -31,7 +34,10 @@ public partial class AddPaycardPage : Form
         }
         else
         {
-            MessageBox.Show("Dodanie karty płatniczej powiodło się.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("Dodanie karty płatniczej nie powiodło się.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        var mainPage = _serviceProvider.GetRequiredService<MainPage>();
+        await mainPage.InitializeValuesOfPaycardAsync();
     }
 }

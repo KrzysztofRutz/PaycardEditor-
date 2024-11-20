@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaycardEditor.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using PaycardEditor.Infrastructure.Context;
 namespace PaycardEditor.Infrastructure.Migrations
 {
     [DbContext(typeof(PaycardEditorDbContext))]
-    partial class PaycardEditorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241120120956_ChangeVarTypeOnSerialNrAndOwnerAccountNr")]
+    partial class ChangeVarTypeOnSerialNrAndOwnerAccountNr
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

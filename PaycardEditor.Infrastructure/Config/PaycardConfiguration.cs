@@ -11,6 +11,7 @@ public class PaycardConfiguration : BaseEntityConfiguration<Paycard>
         builder.ToTable("Paycards");
 
         builder.Property(x => x.OwnerAccountNr)
+            .HasMaxLength(24)
             .IsRequired();
 
         builder.Property(x => x.PIN)
@@ -18,6 +19,7 @@ public class PaycardConfiguration : BaseEntityConfiguration<Paycard>
             .IsRequired();
 
         builder.Property(x => x.SerialNr)
+            .HasMaxLength(16)
             .IsRequired();
 
         builder.HasIndex(x => x.CardId)

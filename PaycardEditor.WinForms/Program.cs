@@ -35,7 +35,7 @@ namespace PaycardEditor.WinForms
             services.AddInfrastructure(config);
             services.AddApplication();
 
-            services.AddTransient<MainPage>();
+            services.AddSingleton<MainPage>();
             services.AddTransient<AddPaycardPage>();
         }
     }

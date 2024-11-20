@@ -16,11 +16,11 @@ internal class PaycardRepository : IPaycardRepository
     public async Task<Paycard> GetByCardIdAsync(string cardId)
         => await _dbContext.Paycards.FirstAsync(x => x.CardId == cardId);
 
-    public async Task<Paycard> GetByOwnerAccountNrAsync(int ownerAccountNr)
-        => await _dbContext.Paycards.FirstAsync(x => x.OwnerAccountNr == ownerAccountNr);
+    public async Task<IEnumerable<Paycard>> GetByOwnerAccountNrAsync(string ownerAccountNr, CancellationToken cancellationToken = default)
+        => await _dbContext.Paycards.Where(x => x.OwnerAccountNr == ownerAccountNr).ToListAsync(cancellationToken);
 
-    public async Task<Paycard> GetBySerialNrAsync(int serialNr)
-        => await _dbContext.Paycards.FirstAsync(x => x.SerialNr == serialNr);
+    public async Task<IEnumerable<Paycard>> GetBySerialNrAsync(string serialNr, CancellationToken cancellationToken = default)
+        => await _dbContext.Paycards.Where(x => x.SerialNr == serialNr).ToListAsync(cancellationToken);
 
     public void Add(Paycard paycard)
         => _dbContext.Paycards.Add(paycard);

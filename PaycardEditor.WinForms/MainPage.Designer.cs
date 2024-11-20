@@ -37,24 +37,30 @@ namespace PaycardEditor.WinForms
             KindOfSearchComboBox = new ComboBox();
             label1 = new Label();
             SearchTextbox = new TextBox();
-            button1 = new Button();
+            SearchButton = new Button();
             label3 = new Label();
             pictureBox3 = new PictureBox();
             pictureBox1 = new PictureBox();
             SerialNrLabel = new Label();
             panel1 = new Panel();
+            label11 = new Label();
+            label10 = new Label();
+            label9 = new Label();
+            label8 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
             label7 = new Label();
-            CardIdTextbox = new TextBox();
             label6 = new Label();
             SerialNrTextbox = new TextBox();
             label5 = new Label();
             PINTextbox = new TextBox();
             label4 = new Label();
             OwnerAccountNrTextbox = new TextBox();
+            CardIdTextbox = new TextBox();
             tableLayoutPanel4 = new TableLayoutPanel();
             pictureBox2 = new PictureBox();
             label2 = new Label();
+            NextRecordButton = new Button();
+            PreviousRecordButton = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -90,6 +96,7 @@ namespace PaycardEditor.WinForms
             DeleteButton.Size = new Size(66, 72);
             DeleteButton.TabIndex = 2;
             DeleteButton.UseVisualStyleBackColor = false;
+            DeleteButton.Click += DeleteButton_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -110,7 +117,7 @@ namespace PaycardEditor.WinForms
             tableLayoutPanel1.Controls.Add(SettingsButton, 0, 0);
             tableLayoutPanel1.Controls.Add(DeleteButton, 2, 0);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 7, 0);
-            tableLayoutPanel1.Controls.Add(button1, 8, 0);
+            tableLayoutPanel1.Controls.Add(SearchButton, 8, 0);
             tableLayoutPanel1.Controls.Add(label3, 9, 0);
             tableLayoutPanel1.Controls.Add(pictureBox3, 10, 0);
             tableLayoutPanel1.Dock = DockStyle.Top;
@@ -118,7 +125,7 @@ namespace PaycardEditor.WinForms
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 76F));
-            tableLayoutPanel1.Size = new Size(899, 78);
+            tableLayoutPanel1.Size = new Size(936, 78);
             tableLayoutPanel1.TabIndex = 3;
             // 
             // AddButton
@@ -190,24 +197,25 @@ namespace PaycardEditor.WinForms
             SearchTextbox.Size = new Size(183, 25);
             SearchTextbox.TabIndex = 6;
             // 
-            // button1
+            // SearchButton
             // 
-            button1.BackColor = Color.FromArgb(224, 224, 224);
-            button1.BackgroundImage = Properties.Resources.loop;
-            button1.BackgroundImageLayout = ImageLayout.Stretch;
-            button1.Cursor = Cursors.Hand;
-            button1.Dock = DockStyle.Fill;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Location = new Point(582, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(66, 72);
-            button1.TabIndex = 7;
-            button1.UseVisualStyleBackColor = false;
+            SearchButton.BackColor = Color.FromArgb(224, 224, 224);
+            SearchButton.BackgroundImage = Properties.Resources.loop;
+            SearchButton.BackgroundImageLayout = ImageLayout.Stretch;
+            SearchButton.Cursor = Cursors.Hand;
+            SearchButton.Dock = DockStyle.Fill;
+            SearchButton.FlatStyle = FlatStyle.Flat;
+            SearchButton.Location = new Point(582, 3);
+            SearchButton.Name = "SearchButton";
+            SearchButton.Size = new Size(66, 72);
+            SearchButton.TabIndex = 7;
+            SearchButton.UseVisualStyleBackColor = false;
+            SearchButton.Click += SearchButton_Click;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Dock = DockStyle.Fill;
+            label3.Dock = DockStyle.Right;
             label3.FlatStyle = FlatStyle.Flat;
             label3.Font = new Font("Yu Gothic UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 238);
             label3.ForeColor = SystemColors.ControlLight;
@@ -220,7 +228,6 @@ namespace PaycardEditor.WinForms
             // 
             // pictureBox3
             // 
-            pictureBox3.Dock = DockStyle.Right;
             pictureBox3.Image = Properties.Resources.debit_card;
             pictureBox3.Location = new Point(813, 3);
             pictureBox3.Name = "pictureBox3";
@@ -232,7 +239,7 @@ namespace PaycardEditor.WinForms
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.Paycard;
-            pictureBox1.Location = new Point(331, 96);
+            pictureBox1.Location = new Point(384, 96);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(566, 332);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -244,37 +251,76 @@ namespace PaycardEditor.WinForms
             SerialNrLabel.AutoSize = true;
             SerialNrLabel.BackColor = Color.Silver;
             SerialNrLabel.Font = new Font("Segoe UI", 18F);
-            SerialNrLabel.Location = new Point(465, 271);
+            SerialNrLabel.Location = new Point(505, 271);
             SerialNrLabel.Name = "SerialNrLabel";
-            SerialNrLabel.Size = new Size(243, 32);
+            SerialNrLabel.Size = new Size(195, 32);
             SerialNrLabel.TabIndex = 6;
-            SerialNrLabel.Text = "1111 2222 3333 4444";
+            SerialNrLabel.Text = "---- ---- ---- ----";
             // 
             // panel1
             // 
-            panel1.BackColor = Color.FromArgb(224, 224, 224);
+            panel1.BackColor = Color.FromArgb(58, 119, 169);
+            panel1.Controls.Add(label11);
+            panel1.Controls.Add(label10);
+            panel1.Controls.Add(label9);
+            panel1.Controls.Add(label8);
             panel1.Controls.Add(tableLayoutPanel3);
             panel1.Controls.Add(tableLayoutPanel4);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 78);
             panel1.Name = "panel1";
-            panel1.Size = new Size(370, 353);
+            panel1.Size = new Size(410, 353);
             panel1.TabIndex = 7;
+            // 
+            // label11
+            // 
+            label11.ForeColor = Color.FromArgb(87, 179, 254);
+            label11.Location = new Point(-1, 272);
+            label11.Name = "label11";
+            label11.Size = new Size(412, 23);
+            label11.TabIndex = 6;
+            label11.Text = "---------------------------------------------------------------------------------";
+            // 
+            // label10
+            // 
+            label10.ForeColor = Color.FromArgb(87, 179, 254);
+            label10.Location = new Point(-2, 200);
+            label10.Name = "label10";
+            label10.Size = new Size(412, 23);
+            label10.TabIndex = 5;
+            label10.Text = "---------------------------------------------------------------------------------";
+            // 
+            // label9
+            // 
+            label9.ForeColor = Color.FromArgb(87, 179, 254);
+            label9.Location = new Point(-2, 125);
+            label9.Name = "label9";
+            label9.Size = new Size(412, 23);
+            label9.TabIndex = 4;
+            label9.Text = "---------------------------------------------------------------------------------";
+            // 
+            // label8
+            // 
+            label8.ForeColor = Color.FromArgb(87, 179, 254);
+            label8.Location = new Point(-2, 49);
+            label8.Name = "label8";
+            label8.Size = new Size(412, 23);
+            label8.TabIndex = 3;
+            label8.Text = "---------------------------------------------------------------------------------";
             // 
             // tableLayoutPanel3
             // 
-            tableLayoutPanel3.CellBorderStyle = TableLayoutPanelCellBorderStyle.Inset;
             tableLayoutPanel3.ColumnCount = 2;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44.09938F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55.90062F));
             tableLayoutPanel3.Controls.Add(label7, 0, 3);
-            tableLayoutPanel3.Controls.Add(CardIdTextbox, 1, 3);
             tableLayoutPanel3.Controls.Add(label6, 0, 2);
             tableLayoutPanel3.Controls.Add(SerialNrTextbox, 1, 2);
             tableLayoutPanel3.Controls.Add(label5, 0, 1);
             tableLayoutPanel3.Controls.Add(PINTextbox, 1, 1);
             tableLayoutPanel3.Controls.Add(label4, 0, 0);
             tableLayoutPanel3.Controls.Add(OwnerAccountNrTextbox, 1, 0);
+            tableLayoutPanel3.Controls.Add(CardIdTextbox, 1, 3);
             tableLayoutPanel3.Location = new Point(0, 59);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 4;
@@ -283,34 +329,27 @@ namespace PaycardEditor.WinForms
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel3.Size = new Size(370, 294);
+            tableLayoutPanel3.Size = new Size(410, 294);
             tableLayoutPanel3.TabIndex = 1;
             // 
             // label7
             // 
             label7.Anchor = AnchorStyles.Right;
             label7.Font = new Font("Segoe UI", 10F);
-            label7.Location = new Point(26, 245);
+            label7.ForeColor = SystemColors.ControlLight;
+            label7.Location = new Point(44, 245);
             label7.Name = "label7";
             label7.Size = new Size(133, 23);
             label7.TabIndex = 6;
             label7.Text = "Identyfikator karty:";
             label7.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // CardIdTextbox
-            // 
-            CardIdTextbox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            CardIdTextbox.Location = new Point(167, 245);
-            CardIdTextbox.Name = "CardIdTextbox";
-            CardIdTextbox.ReadOnly = true;
-            CardIdTextbox.Size = new Size(198, 23);
-            CardIdTextbox.TabIndex = 7;
-            // 
             // label6
             // 
             label6.Anchor = AnchorStyles.Right;
             label6.Font = new Font("Segoe UI", 10F);
-            label6.Location = new Point(26, 172);
+            label6.ForeColor = SystemColors.ControlLight;
+            label6.Location = new Point(44, 171);
             label6.Name = "label6";
             label6.Size = new Size(133, 23);
             label6.TabIndex = 4;
@@ -320,17 +359,18 @@ namespace PaycardEditor.WinForms
             // SerialNrTextbox
             // 
             SerialNrTextbox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            SerialNrTextbox.Location = new Point(167, 172);
+            SerialNrTextbox.Location = new Point(183, 171);
             SerialNrTextbox.Name = "SerialNrTextbox";
             SerialNrTextbox.ReadOnly = true;
-            SerialNrTextbox.Size = new Size(198, 23);
+            SerialNrTextbox.Size = new Size(224, 23);
             SerialNrTextbox.TabIndex = 5;
             // 
             // label5
             // 
             label5.Anchor = AnchorStyles.Right;
             label5.Font = new Font("Segoe UI", 10F);
-            label5.Location = new Point(26, 99);
+            label5.ForeColor = SystemColors.ControlLight;
+            label5.Location = new Point(44, 98);
             label5.Name = "label5";
             label5.Size = new Size(133, 23);
             label5.TabIndex = 2;
@@ -340,17 +380,18 @@ namespace PaycardEditor.WinForms
             // PINTextbox
             // 
             PINTextbox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            PINTextbox.Location = new Point(167, 99);
+            PINTextbox.Location = new Point(183, 98);
             PINTextbox.Name = "PINTextbox";
             PINTextbox.ReadOnly = true;
-            PINTextbox.Size = new Size(198, 23);
+            PINTextbox.Size = new Size(224, 23);
             PINTextbox.TabIndex = 3;
             // 
             // label4
             // 
             label4.Anchor = AnchorStyles.Right;
             label4.Font = new Font("Segoe UI", 10F);
-            label4.Location = new Point(26, 26);
+            label4.ForeColor = SystemColors.ControlLight;
+            label4.Location = new Point(44, 25);
             label4.Name = "label4";
             label4.Size = new Size(133, 23);
             label4.TabIndex = 0;
@@ -360,11 +401,22 @@ namespace PaycardEditor.WinForms
             // OwnerAccountNrTextbox
             // 
             OwnerAccountNrTextbox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            OwnerAccountNrTextbox.Location = new Point(167, 26);
+            OwnerAccountNrTextbox.Location = new Point(183, 25);
             OwnerAccountNrTextbox.Name = "OwnerAccountNrTextbox";
             OwnerAccountNrTextbox.ReadOnly = true;
-            OwnerAccountNrTextbox.Size = new Size(198, 23);
+            OwnerAccountNrTextbox.Size = new Size(224, 23);
             OwnerAccountNrTextbox.TabIndex = 1;
+            // 
+            // CardIdTextbox
+            // 
+            CardIdTextbox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            CardIdTextbox.BackColor = SystemColors.Control;
+            CardIdTextbox.BorderStyle = BorderStyle.None;
+            CardIdTextbox.Location = new Point(183, 248);
+            CardIdTextbox.Name = "CardIdTextbox";
+            CardIdTextbox.ReadOnly = true;
+            CardIdTextbox.Size = new Size(224, 16);
+            CardIdTextbox.TabIndex = 7;
             // 
             // tableLayoutPanel4
             // 
@@ -379,14 +431,14 @@ namespace PaycardEditor.WinForms
             tableLayoutPanel4.RowCount = 1;
             tableLayoutPanel4.RowStyles.Add(new RowStyle());
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel4.Size = new Size(370, 49);
+            tableLayoutPanel4.Size = new Size(410, 49);
             tableLayoutPanel4.TabIndex = 2;
             // 
             // pictureBox2
             // 
             pictureBox2.Dock = DockStyle.Left;
             pictureBox2.Image = Properties.Resources.atm_card;
-            pictureBox2.Location = new Point(259, 3);
+            pictureBox2.Location = new Point(287, 3);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(50, 50);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -398,19 +450,52 @@ namespace PaycardEditor.WinForms
             label2.AutoSize = true;
             label2.Dock = DockStyle.Fill;
             label2.Font = new Font("Segoe UI", 18F);
+            label2.ForeColor = SystemColors.ControlLight;
             label2.Location = new Point(3, 0);
             label2.Name = "label2";
-            label2.Size = new Size(250, 56);
+            label2.Size = new Size(278, 56);
             label2.TabIndex = 1;
             label2.Text = "Szczegóły karty";
             label2.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // NextRecordButton
+            // 
+            NextRecordButton.BackgroundImage = Properties.Resources.right_arrow;
+            NextRecordButton.BackgroundImageLayout = ImageLayout.Zoom;
+            NextRecordButton.Cursor = Cursors.Hand;
+            NextRecordButton.FlatAppearance.BorderSize = 0;
+            NextRecordButton.FlatAppearance.CheckedBackColor = Color.FromArgb(224, 224, 224);
+            NextRecordButton.FlatStyle = FlatStyle.Flat;
+            NextRecordButton.Location = new Point(874, 250);
+            NextRecordButton.Name = "NextRecordButton";
+            NextRecordButton.Size = new Size(63, 53);
+            NextRecordButton.TabIndex = 8;
+            NextRecordButton.UseVisualStyleBackColor = true;
+            NextRecordButton.Click += NextRecordButton_Click;
+            // 
+            // PreviousRecordButton
+            // 
+            PreviousRecordButton.BackgroundImage = Properties.Resources.left_arrow;
+            PreviousRecordButton.BackgroundImageLayout = ImageLayout.Zoom;
+            PreviousRecordButton.Cursor = Cursors.Hand;
+            PreviousRecordButton.FlatAppearance.BorderSize = 0;
+            PreviousRecordButton.FlatAppearance.CheckedBackColor = Color.FromArgb(224, 224, 224);
+            PreviousRecordButton.FlatStyle = FlatStyle.Flat;
+            PreviousRecordButton.Location = new Point(411, 250);
+            PreviousRecordButton.Name = "PreviousRecordButton";
+            PreviousRecordButton.Size = new Size(63, 53);
+            PreviousRecordButton.TabIndex = 9;
+            PreviousRecordButton.UseVisualStyleBackColor = true;
+            PreviousRecordButton.Click += PreviousRecordButton_Click;
             // 
             // MainPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(899, 431);
+            ClientSize = new Size(936, 431);
+            Controls.Add(PreviousRecordButton);
+            Controls.Add(NextRecordButton);
             Controls.Add(panel1);
             Controls.Add(SerialNrLabel);
             Controls.Add(pictureBox1);
@@ -457,12 +542,18 @@ namespace PaycardEditor.WinForms
         private PictureBox pictureBox2;
         private Label label2;
         private Button AddButton;
-        private Button button1;
+        private Button SearchButton;
         private Label label3;
         private TableLayoutPanel tableLayoutPanel2;
         private ComboBox KindOfSearchComboBox;
         private Label label1;
         private PictureBox pictureBox3;
         private TextBox SearchTextbox;
+        private Button NextRecordButton;
+        private Button PreviousRecordButton;
+        private Label label8;
+        private Label label11;
+        private Label label10;
+        private Label label9;
     }
 }
