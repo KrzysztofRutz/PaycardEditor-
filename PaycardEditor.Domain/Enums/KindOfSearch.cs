@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.Drawing;
-
-namespace PaycardEditor.Domain.Enums;
+﻿namespace PaycardEditor.Domain.Enums;
 
 public enum KindOfSearch
 {

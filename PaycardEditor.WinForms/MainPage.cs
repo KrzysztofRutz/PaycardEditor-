@@ -2,7 +2,10 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using PaycardEditor.Applications.Commands.Paycard.RemovePaycard;
 using PaycardEditor.Applications.Dtos;
+using PaycardEditor.Applications.Queries.Paycard.GetPaycardByCardId;
 using PaycardEditor.Applications.Queries.Paycard.GetPaycards;
+using PaycardEditor.Applications.Queries.Paycard.GetPaycardsByOwnerAccountNr;
+using PaycardEditor.Applications.Queries.Paycard.GetPaycardsBySerialNr;
 using PaycardEditor.Domain.Enums;
 
 namespace PaycardEditor.WinForms;
@@ -42,12 +45,15 @@ public partial class MainPage : Form
         {
             case KindOfSearch.ByOwnerAccountNr:
                 SearchTextbox.PlaceholderText = "Podaj nr konta w³aœciciela";
+                SearchTextbox.MaxLength = 24;
                 break;
             case KindOfSearch.BySerialNr:
                 SearchTextbox.PlaceholderText = "Podaj nr seryjny karty";
+                SearchTextbox.MaxLength = 16;
                 break;
             case KindOfSearch.ByCardId:
                 SearchTextbox.PlaceholderText = "Podaj unikalny klucz karty";
+                SearchTextbox.MaxLength = 32;
                 break;
         }
     }
@@ -105,64 +111,81 @@ public partial class MainPage : Form
     private async void SearchButton_Click(object sender, EventArgs e)
     {
         var kindOfSearchSelected = KindOfSearchComboBox.SelectedValue;
+        string searchElementText = SearchTextbox.Text;
 
-        List<PaycardDto> paycardDtoList = new();
+        object query = new();
         switch (kindOfSearchSelected)
         {
             case KindOfSearch.ByOwnerAccountNr:
-                paycardDtoList = null;
+                query = new GetPaycardsByOwnerAccountNrQuery(searchElementText);
                 break;
             case KindOfSearch.BySerialNr:
-                paycardDtoList = null;
+                query = new GetPaycardsBySerialNrQuery(searchElementText);
                 break;
             case KindOfSearch.ByCardId:
-                paycardDtoList = null;
+                query = new GetPaycardByCardIdQuery(searchElementText);
                 break;
         }
 
-        
-    }
-
-    public async Task InitializeValuesOfPaycardAsync()
-    {
         try
         {
-            _paycardsDtoList = await _mediator.Send(new GetPaycardsQuery());
+            var result = await _mediator.Send(query);
+            List<PaycardDto> paycardDtos = new();
+            if (query is GetPaycardByCardIdQuery)
+            {
+                paycardDtos = new List<PaycardDto>() { (PaycardDto)result };
+            }
+            else
+            {
+                paycardDtos = (List<PaycardDto>)result;
+            }
+
+            await InitializeValuesOfPaycardAsync(true, paycardDtos);
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Brak komunikacji z serwerem SQL. PrzejdŸ do ustawieñ aby sprawdziæ po³¹czenie.", "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.ToString(), "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private async void DisplayAllComponentButton_Click(object sender, EventArgs e)
+    {
+        await InitializeValuesOfPaycardAsync();
+    }
+
+    public async Task InitializeValuesOfPaycardAsync(bool asSearchComponent = false, List<PaycardDto> paycardDtos = null)
+    {
+        if (!asSearchComponent)
+        {
+            try
+            {
+                _paycardsDtoList = await _mediator.Send(new GetPaycardsQuery());
+            }
+            catch
+            {
+                MessageBox.Show("Brak komunikacji z serwerem SQL. PrzejdŸ do ustawieñ aby sprawdziæ po³¹czenie.", "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        else
+        {
+            _paycardsDtoList = paycardDtos;
         }
 
-        _paycardsDtoList = _paycardsDtoList.OrderBy(x => x.Id).ToList();
+        dataGridView1.DataSource = _paycardsDtoList = _paycardsDtoList.OrderBy(x => x.Id).ToList();
 
         var paycardsWithLastRecord = new PaycardDto();
         if (_paycardsDtoList.Count() != 0)
         {
             paycardsWithLastRecord = _paycardsDtoList.Last();
             _index = _paycardsDtoList.Count();
-        }
 
-        if (_paycardsDtoList.Count() != 0)
-        {
             AsignPaycardParameterToControls(paycardsWithLastRecord);
         }
     }
 
     private void AsignPaycardParameterToControls(PaycardDto paycardDto)
     {
-        string paycardOwnerAccountNrSplit = string.Empty;
-        foreach (char c in paycardDto.OwnerAccountNr)
-        {
-            paycardOwnerAccountNrSplit += c;
-
-            if (paycardOwnerAccountNrSplit.Length % 4 == 0)
-            {
-                paycardOwnerAccountNrSplit += ' ';
-            }
-        }
-
-        OwnerAccountNrTextbox.Text = paycardOwnerAccountNrSplit;
+        OwnerAccountNrTextbox.Text = paycardDto.OwnerAccountNr;
         PINTextbox.Text = paycardDto.PIN.ToString();
 
         string paycardSerialNrSplit = string.Empty;
