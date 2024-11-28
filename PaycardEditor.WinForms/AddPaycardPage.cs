@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using PaycardEditor.Applications.Commands.Paycard.AddPaycard;
+using PaycardEditor.Applications.Dtos;
 
 namespace PaycardEditor.WinForms;
 
@@ -25,17 +27,29 @@ public partial class AddPaycardPage : Form
             PIN = int.Parse(PINTextBox.Text),
             SerialNr = SerialNrTextBox.Text,
         };
+        
+        try
+        {
+            var result = await _mediator.Send(command);
 
-        var result = _mediator.Send(command);
+            MessageBox.Show("Dodanie karty płatniczej powiodło się.", "Powodzenie", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex) 
+        {
+            MessageBox.Show(ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
 
-        if (result != null)
+        /*
+        var result = await _mediator.Send(command);
+
+        if (result is not PaycardDto)
         {
             MessageBox.Show("Dodanie karty płatniczej powiodło się.", "Powodzenie", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         else
         {
             MessageBox.Show("Dodanie karty płatniczej nie powiodło się.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        }*/
 
         var mainPage = _serviceProvider.GetRequiredService<MainPage>();
         await mainPage.InitializeValuesOfPaycardAsync();
