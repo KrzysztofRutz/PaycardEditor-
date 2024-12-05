@@ -2,9 +2,9 @@
 
 public enum KindOfSearch
 {
-    ByOwnerAccountNr,
-    BySerialNr,
-    ByCardId,
+    NrKonta,
+    NrSeryjny,
+    IdKarty,
 }
 
 

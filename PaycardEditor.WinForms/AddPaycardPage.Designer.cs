@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddPaycardPage));
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel5 = new TableLayoutPanel();
             label1 = new Label();
@@ -93,7 +94,7 @@
             // label1
             // 
             label1.Dock = DockStyle.Right;
-            label1.Font = new Font("Segoe UI", 16F);
+            label1.Font = new Font("Yu Gothic UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 238);
             label1.Location = new Point(21, 0);
             label1.Name = "label1";
             label1.Size = new Size(286, 43);
@@ -130,6 +131,7 @@
             // SerialNrLabel
             // 
             SerialNrLabel.Anchor = AnchorStyles.Right;
+            SerialNrLabel.Font = new Font("Yu Gothic UI", 9F);
             SerialNrLabel.Location = new Point(14, 26);
             SerialNrLabel.Name = "SerialNrLabel";
             SerialNrLabel.Size = new Size(142, 23);
@@ -166,6 +168,7 @@
             // PINLabel
             // 
             PINLabel.Anchor = AnchorStyles.Right;
+            PINLabel.Font = new Font("Yu Gothic UI", 9F);
             PINLabel.Location = new Point(14, 26);
             PINLabel.Name = "PINLabel";
             PINLabel.Size = new Size(142, 23);
@@ -180,7 +183,6 @@
             PINTextBox.Location = new Point(162, 21);
             PINTextBox.MaxLength = 4;
             PINTextBox.Name = "PINTextBox";
-            PINTextBox.PasswordChar = '*';
             PINTextBox.Size = new Size(247, 32);
             PINTextBox.TabIndex = 1;
             // 
@@ -203,7 +205,7 @@
             // OwnerAccountNrLabel
             // 
             OwnerAccountNrLabel.Anchor = AnchorStyles.Right;
-            OwnerAccountNrLabel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            OwnerAccountNrLabel.Font = new Font("Yu Gothic UI", 9F);
             OwnerAccountNrLabel.Location = new Point(13, 26);
             OwnerAccountNrLabel.Name = "OwnerAccountNrLabel";
             OwnerAccountNrLabel.Size = new Size(142, 23);
@@ -234,7 +236,7 @@
             SubmitButton.TabIndex = 4;
             SubmitButton.Text = "Zatwierdź i dodaj kartę płatniczą";
             SubmitButton.UseVisualStyleBackColor = false;
-            SubmitButton.Click += SubmitButton_Click;
+            SubmitButton.Click += SubmitButton_ClickAsync;
             // 
             // AddPaycardPage
             // 
@@ -242,11 +244,12 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(424, 390);
             Controls.Add(tableLayoutPanel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "AddPaycardPage";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "AddPaycardPage";
+            Text = "Dodawanie nowej karty";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

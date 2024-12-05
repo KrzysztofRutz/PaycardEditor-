@@ -32,7 +32,7 @@ public partial class MainPage : Form
         addPage.ShowDialog();
     }
 
-    private async void MainPage_Load(object sender, EventArgs e)
+    private async void MainPage_LoadAsync(object sender, EventArgs e)
     {
         KindOfSearchComboBox.DataSource = Enum.GetValues(typeof(KindOfSearch));
 
@@ -43,15 +43,15 @@ public partial class MainPage : Form
     {
         switch (KindOfSearchComboBox.SelectedItem)
         {
-            case KindOfSearch.ByOwnerAccountNr:
+            case KindOfSearch.NrKonta:
                 SearchTextbox.PlaceholderText = "Podaj nr konta w³aœciciela";
                 SearchTextbox.MaxLength = 24;
                 break;
-            case KindOfSearch.BySerialNr:
+            case KindOfSearch.NrSeryjny:
                 SearchTextbox.PlaceholderText = "Podaj nr seryjny karty";
                 SearchTextbox.MaxLength = 16;
                 break;
-            case KindOfSearch.ByCardId:
+            case KindOfSearch.IdKarty:
                 SearchTextbox.PlaceholderText = "Podaj unikalny klucz karty";
                 SearchTextbox.MaxLength = 32;
                 break;
@@ -83,7 +83,7 @@ public partial class MainPage : Form
         }
     }
 
-    private async void DeleteButton_Click(object sender, EventArgs e)
+    private async void DeleteButton_ClickAsync(object sender, EventArgs e)
     {
         var paycardDto = _paycardsDtoList.Where(x => x.CardId == CardIdTextbox.Text).First();
 
@@ -108,7 +108,7 @@ public partial class MainPage : Form
         await InitializeValuesOfPaycardAsync();
     }
 
-    private async void SearchButton_Click(object sender, EventArgs e)
+    private async void SearchButton_ClickAsync(object sender, EventArgs e)
     {
         var kindOfSearchSelected = KindOfSearchComboBox.SelectedValue;
         string searchElementText = SearchTextbox.Text;
@@ -116,13 +116,13 @@ public partial class MainPage : Form
         object query = new();
         switch (kindOfSearchSelected)
         {
-            case KindOfSearch.ByOwnerAccountNr:
+            case KindOfSearch.NrKonta:
                 query = new GetPaycardsByOwnerAccountNrQuery(searchElementText);
                 break;
-            case KindOfSearch.BySerialNr:
+            case KindOfSearch.NrSeryjny:
                 query = new GetPaycardsBySerialNrQuery(searchElementText);
                 break;
-            case KindOfSearch.ByCardId:
+            case KindOfSearch.IdKarty:
                 query = new GetPaycardByCardIdQuery(searchElementText);
                 break;
         }
@@ -140,6 +140,13 @@ public partial class MainPage : Form
                 paycardDtos = (List<PaycardDto>)result;
             }
 
+            if (paycardDtos.Count == 0)
+            {
+                MessageBox.Show("Brak kart p³atniczych o wyszukiwanych parametrach.", "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                return;
+            }
+
             await InitializeValuesOfPaycardAsync(true, paycardDtos);
         }
         catch (Exception ex)
@@ -148,9 +155,16 @@ public partial class MainPage : Form
         }
     }
 
-    private async void DisplayAllComponentButton_Click(object sender, EventArgs e)
+    private async void DisplayAllComponentButton_ClickAsync(object sender, EventArgs e)
     {
         await InitializeValuesOfPaycardAsync();
+    }
+
+    private void SettingsButton_Click(object sender, EventArgs e)
+    {
+        var settingsPage = _serviceProvider.GetRequiredService<SettingsPage>();
+
+        settingsPage.ShowDialog();
     }
 
     public async Task InitializeValuesOfPaycardAsync(bool asSearchComponent = false, List<PaycardDto> paycardDtos = null)
@@ -171,7 +185,7 @@ public partial class MainPage : Form
             _paycardsDtoList = paycardDtos;
         }
 
-        dataGridView1.DataSource = _paycardsDtoList = _paycardsDtoList.OrderBy(x => x.Id).ToList();
+        PaycardsDataGridView.DataSource = _paycardsDtoList = _paycardsDtoList.OrderBy(x => x.Id).ToList();
 
         var paycardsWithLastRecord = new PaycardDto();
         if (_paycardsDtoList.Count() != 0)

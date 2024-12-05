@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using PaycardEditor.Applications;
+using PaycardEditor.Domain.Settings;
 using PaycardEditor.Infrastructure;
 
 namespace PaycardEditor.WinForms;
@@ -32,10 +34,14 @@ internal static class Program
             .AddJsonFile("appsettings.json", false, true)
             .Build();
 
-        services.AddInfrastructure(config);
+        services.Configure<AppSettings>(config.GetSection("AppSettings"));
+        IOptions<AppSettings> options = services.BuildServiceProvider().GetRequiredService<IOptions<AppSettings>>();
+
+        services.AddInfrastructure(config, options);
         services.AddApplication();
 
         services.AddSingleton<MainPage>();
         services.AddTransient<AddPaycardPage>();
+        services.AddTransient<SettingsPage>();
     }
 }

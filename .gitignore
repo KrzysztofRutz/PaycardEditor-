@@ -10,6 +10,9 @@
 *.userosscache
 *.sln.docstates
 
+#Ignore README.md file
+README.md
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

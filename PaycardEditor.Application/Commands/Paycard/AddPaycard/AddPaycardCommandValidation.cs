@@ -13,7 +13,9 @@ public class AddPaycardCommandValidation : AbstractValidator<AddPaycardCommand>
 
         RuleFor(x => x.PIN)
             .NotEmpty().WithMessage("PIN jest wymagany.")
-            .Must(x => HasNotAnyLettersAndSpecialCharacters(x.ToString())).WithMessage("PIN musi składać się tylko z cyfr.");
+            .Must(x => HasNotAnyLettersAndSpecialCharacters(x.ToString())).WithMessage("PIN musi składać się tylko z cyfr.")
+            .Length(4).WithMessage("PIN musi posiadać 4 cyfry."); ;
+
 
         RuleFor(x => x.SerialNr)
             .NotEmpty().WithMessage("Nr seryjny karty jest wymagany.")

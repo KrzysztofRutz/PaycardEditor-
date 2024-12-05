@@ -22,7 +22,7 @@ public class AddPaycardCommandHandler : ICommandHandler<AddPaycardCommand, Payca
         var paycard = new Domain.Entities.Paycard
         {
             OwnerAccountNr = request.OwnerAccountNr,
-            PIN = request.PIN,
+            PIN = int.Parse(request.PIN),
             SerialNr = request.SerialNr,
             CardId = RandomString()
         };

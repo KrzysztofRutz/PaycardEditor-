@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using PaycardEditor.Domain.Entities;
+using PaycardEditor.Domain.Settings;
 using PaycardEditor.Infrastructure.Config;
 
 namespace PaycardEditor.Infrastructure.Context;
@@ -20,16 +21,19 @@ internal class PaycardEditorDbContext : DbContext
         modelBuilder.ApplyConfiguration(new PaycardConfiguration());
     }
 
-    public class PaycardEditorDbContextFactory : IDesignTimeDbContextFactory<PaycardEditorDbContext>
+    internal class PaycardEditorDbContextFactory : IDesignTimeDbContextFactory<PaycardEditorDbContext>
     {
-        public PaycardEditorDbContextFactory()
+        private readonly AppSettings _settings;
+
+        public PaycardEditorDbContextFactory(IOptions<AppSettings> settings)
         {
+            _settings = settings.Value;
         }
 
         public PaycardEditorDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<PaycardEditorDbContext>();
-            optionsBuilder.UseSqlServer("Server=LAPTOP-G9F6P9TK\\SQLEXPRESS;Database=PaycardDB;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer(_settings.PaycardCS);
 
             return new PaycardEditorDbContext(optionsBuilder.Options);
         }
