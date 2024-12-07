@@ -153,7 +153,7 @@
             CheckConnectionDbButton.Name = "CheckConnectionDbButton";
             CheckConnectionDbButton.Size = new Size(190, 62);
             CheckConnectionDbButton.TabIndex = 8;
-            CheckConnectionDbButton.Text = "Sprawdź połączenie";
+            CheckConnectionDbButton.Text = "Sprawdź \r\npołączenie";
             CheckConnectionDbButton.UseVisualStyleBackColor = false;
             CheckConnectionDbButton.Click += CheckConnectionDbButton_ClickAsync;
             // 

@@ -149,9 +149,9 @@ public partial class MainPage : Form
 
             await InitializeValuesOfPaycardAsync(true, paycardDtos);
         }
-        catch (Exception ex)
+        catch
         {
-            MessageBox.Show(ex.ToString(), "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("Problem z wyszukaniem karty p³atniczej.", "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
